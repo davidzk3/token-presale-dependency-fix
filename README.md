@@ -51,6 +51,7 @@ Show that you can quickly:
 * Fix version conflicts
 * Make a broken Node.js project work again
 
+---
 
 ## **Dependency Fix Summary**
 
