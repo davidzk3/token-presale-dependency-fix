@@ -63,8 +63,7 @@ This project initially failed to install and run due to multiple dependency and 
 - Standardized UI dependencies on **MUI v5**, restoring stable compatibility with React 17.
 - Resolved incompatible testing dependencies by aligning testing libraries with React 17.
 - Added required Node.js polyfills for browser-based Web3 libraries using Vite configuration (Node globals and module polyfills plus Rollup node polyfills).
-- Refactored Moralis usage so `useMoralis` and `useChain` are only executed when Moralis is explicitly enabled, preventing runtime crashes.
-- Isolated Moralis-dependent logic into `Networks.moralis.jsx`, allowing the application to run cleanly without Moralis.
+- Introduced Offline Safe Mode as the default execution path, allowing the application to run without external network dependencies.
 - Implemented a deterministic proof script to verify local execution after dependency repair.
 
 The project now installs, runs locally, and exposes a reproducible proof of correct execution.
@@ -124,7 +123,14 @@ set VITE_URL=http://localhost:5173/&& npm run prove
 Offline Safe Mode is enabled by default and prevents external network calls during development.
 
 * Default behavior makes no Moralis or external HTTPS requests
-* Ensures the project runs cleanly in restricted or offline environments
+* All network-dependent logic is conditionally loaded
+* Ensures deterministic startup in restricted or offline environments
+
+### **Implementation Notes**
+
+- Moralis-dependent logic was isolated into dedicated components (e.g. `Networks.moralis.jsx`)
+- Hooks such as `useMoralis` and `useChain` are only executed when Moralis is enabled
+- This avoids invalid hook execution and eliminates runtime crashes when Moralis is disabled
 
 To explicitly enable Moralis and external services:
 
@@ -174,4 +180,5 @@ VITE_MORALIS_SERVER_URL=
 ## Result
 
 The broken Node.js project was successfully repaired. It installs cleanly, runs locally without errors, and includes a deterministic proof script demonstrating correct execution.
+
 
