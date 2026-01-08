@@ -50,3 +50,70 @@ Show that you can quickly:
 * Spot dependency issues
 * Fix version conflicts
 * Make a broken Node.js project work again
+
+
+## **Dependency Fix Summary**
+
+This project initially failed to install and run due to multiple dependency and configuration issues. The following fixes were applied:
+
+* Fixed React runtime mismatch: the project uses React 17, so react-dom client (React 18 API) was removed and the entrypoint was reverted to ReactDOM.render.
+* Resolved incompatible testing dependencies by aligning testing libraries with React 17.
+* Added required Node.js polyfills for browser based Web3 libraries using Vite configuration (Node globals and module polyfills plus Rollup node polyfills).
+* Implemented Offline Safe Mode to prevent external network calls (notably Moralis and network fetching plugins) unless explicitly enabled.
+* Made network dependent providers conditional via environment variables to ensure clean local startup.
+
+The project now installs without errors and runs cleanly.
+
+## Run
+
+    npm install
+    npm run start
+
+The application will be available at:
+
+    http://localhost:5173
+
+## **Proof Script**
+
+A small Node.js proof script is included to confirm that the project runs correctly after dependency fixes.
+
+### **Steps**
+
+1. In Terminal 1 start the app:
+
+    npm run start
+
+2. In Terminal 2 (CMD on Windows) run the proof script:
+
+    npm run prove
+
+Expected output:
+
+    PROOF: PASS
+
+The proof script verifies:
+* Node.js execution
+* Local probe server startup
+* Vite dev server reachability
+* No external network calls in Offline Safe Mode
+
+Optional override:
+
+    set VITE_URL=http://localhost:5173/&& npm run prove
+
+## **Offline Safe Mode**
+
+Offline Safe Mode is enabled by default and prevents external network calls during development.
+
+* Default behavior makes no Moralis or external HTTPS requests
+* Ensures the project runs cleanly in restricted or offline environments
+
+To explicitly enable Moralis and external services:
+
+    set VITE_ENABLE_MORALIS=true&& npm run start
+
+## **Notes**
+
+* The application includes embedded third party content such as YouTube which may load after the initial render.
+* This behavior does not affect dependency correctness or application startup and is intentionally excluded from the proof script.
+
