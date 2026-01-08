@@ -65,6 +65,8 @@ This project initially failed to install and run due to multiple dependency and 
 
 The project now installs without errors and runs cleanly.
 
+---
+
 ## Run
 
     npm install
@@ -136,3 +138,4 @@ To explicitly enable Moralis and external services:
 ## Result
 
 The broken Node.js project was successfully repaired, now installs cleanly, runs locally without errors, and includes a deterministic proof script demonstrating correct execution.
+
