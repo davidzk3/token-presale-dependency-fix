@@ -113,8 +113,26 @@ To explicitly enable Moralis and external services:
 
     set VITE_ENABLE_MORALIS=true&& npm run start
 
+---
+
+## Files Included for Review
+
+* package.json
+* package-lock.json
+* vite.config.js
+* src/index.jsx
+* scripts/prove.mjs
+* README.md
+
+---
+
 ## **Notes**
 
 * The application includes embedded third party content such as YouTube which may load after the initial render.
 * This behavior does not affect dependency correctness or application startup and is intentionally excluded from the proof script.
 
+---
+
+## Result
+
+The broken Node.js project was successfully repaired, now installs cleanly, runs locally without errors, and includes a deterministic proof script demonstrating correct execution.
