@@ -53,17 +53,21 @@ Show that you can quickly:
 
 ---
 
-## **Dependency Fix Summary**
+# Token Presale dApp – Node.js Dependency Compatibility Fix
+
+## Dependency Fix Summary
 
 This project initially failed to install and run due to multiple dependency and configuration issues. The following fixes were applied:
 
-* Fixed React runtime mismatch: the project uses React 17, so react-dom client (React 18 API) was removed and the entrypoint was reverted to ReactDOM.render.
-* Resolved incompatible testing dependencies by aligning testing libraries with React 17.
-* Added required Node.js polyfills for browser based Web3 libraries using Vite configuration (Node globals and module polyfills plus Rollup node polyfills).
-* Implemented Offline Safe Mode to prevent external network calls (notably Moralis and network fetching plugins) unless explicitly enabled.
-* Made network dependent providers conditional via environment variables to ensure clean local startup.
+- Fixed React runtime mismatch: the project uses React 17, so `react-dom/client` (React 18 API) was removed and the entrypoint was reverted to `ReactDOM.render`.
+- Standardized UI dependencies on **MUI v5**, restoring stable compatibility with React 17.
+- Resolved incompatible testing dependencies by aligning testing libraries with React 17.
+- Added required Node.js polyfills for browser-based Web3 libraries using Vite configuration (Node globals and module polyfills plus Rollup node polyfills).
+- Refactored Moralis usage so `useMoralis` and `useChain` are only executed when Moralis is explicitly enabled, preventing runtime crashes.
+- Isolated Moralis-dependent logic into `Networks.moralis.jsx`, allowing the application to run cleanly without Moralis.
+- Implemented a deterministic proof script to verify local execution after dependency repair.
 
-The project now installs without errors and runs cleanly.
+The project now installs, runs locally, and exposes a reproducible proof of correct execution.
 
 ---
 
@@ -80,29 +84,40 @@ The application will be available at:
 
 A small Node.js proof script is included to confirm that the project runs correctly after dependency fixes.
 
-### **Steps**
+### Steps
 
-1. In Terminal 1 start the app:
+**1. In Terminal 1, start the app:**
 
-    npm run start
+```bash
+npm run start
+```
 
-2. In Terminal 2 (CMD on Windows) run the proof script:
+**2. In Terminal 2 (CMD on Windows), run the proof script:**
 
-    npm run prove
+```bash
+npm run prove
+```
 
-Expected output:
+### Expected Output
 
-    PROOF: PASS
+```text
+PROOF: PASS ✅
+```
 
-The proof script verifies:
-* Node.js execution
-* Local probe server startup
-* Vite dev server reachability
-* No external network calls in Offline Safe Mode
+### What the Proof Script Verifies
+
+- Node.js execution
+- Local probe server startup
+- Vite dev server reachability (HTTP 200 response)
+- Deterministic confirmation that the repaired project runs correctly
 
 Optional override:
 
-    set VITE_URL=http://localhost:5173/&& npm run prove
+```bash
+set VITE_URL=http://localhost:5173/&& npm run prove
+```
+
+---
 
 ## **Offline Safe Mode**
 
@@ -117,19 +132,40 @@ To explicitly enable Moralis and external services:
 
 ---
 
-## Files Included for Review
+## Environment Configuration
 
-* package.json
-* package-lock.json
-* vite.config.js
-* src/index.jsx
-* scripts/prove.mjs
-* README.md
+Only **one environment file** is included in the repository:
+
+### `.env.example`
+
+```env
+VITE_ENABLE_REMOTE=false
+VITE_MORALIS_APP_ID=
+VITE_MORALIS_SERVER_URL=
+```
+
+- `.env.example` serves as a template for optional Moralis configuration.
+- `.env.local` may be created locally but is **ignored by git**.
+- No environment variables are required for a clean local startup.
 
 ---
 
-## **Notes**
+## Files Included for Review
 
+- `package.json`
+- `package-lock.json`
+- `vite.config.js`
+- `src/index.jsx`
+- `src/components/Chains/Networks.jsx`
+- `src/components/Chains/Networks.moralis.jsx`
+- `scripts/prove.mjs`
+- `README.md`
+
+---
+
+## Notes
+
+* Console messages such as `Content Script Bridge...` may appear due to browser extensions and are **not related to the application**.
 * The application includes embedded third party content such as YouTube which may load after the initial render.
 * This behavior does not affect dependency correctness or application startup and is intentionally excluded from the proof script.
 
@@ -137,5 +173,4 @@ To explicitly enable Moralis and external services:
 
 ## Result
 
-The broken Node.js project was successfully repaired, now installs cleanly, runs locally without errors, and includes a deterministic proof script demonstrating correct execution.
-
+The broken Node.js project was successfully repaired. It installs cleanly, runs locally without errors, and includes a deterministic proof script demonstrating correct execution.
