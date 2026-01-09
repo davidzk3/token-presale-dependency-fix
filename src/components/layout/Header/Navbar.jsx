@@ -42,10 +42,11 @@ const Navbar = ({
             to={link.href}
             color="inherit"
             size="large"
-            sx={{ fontWeight: 500, borderRadius: 5 }}
-            className={({ isActive }) =>
-              isActive ? 'activeNavLink' : undefined
-            }
+            sx={(nav) => ({
+              fontWeight: 500,
+              borderRadius: 5,
+              ...(nav.isActive ? { textDecoration: 'underline' } : {}),
+            })}
             end
           >
             {link.label}
@@ -57,10 +58,11 @@ const Navbar = ({
           to={presaleLink.href}
           color="inherit"
           size="large"
-          sx={{ fontWeight: 500, borderRadius: 5 }}
-          className={({ isActive }) =>
-            isActive ? 'activeNavLink' : undefined
-          }
+          sx={(nav) => ({
+            fontWeight: 500,
+            borderRadius: 5,
+            ...(nav.isActive ? { textDecoration: 'underline' } : {}),
+          })}
           end
         >
           {presaleLink.label}
@@ -143,9 +145,7 @@ const Navbar = ({
               ELO whitepaper
             </MenuItem>
 
-            <MenuItem onClick={handleClickContractsItem}>
-              Contracts
-            </MenuItem>
+            <MenuItem onClick={handleClickContractsItem}>Contracts</MenuItem>
           </Menu>
         </Fragment>
       </Stack>
