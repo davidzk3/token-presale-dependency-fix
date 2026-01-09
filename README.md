@@ -59,12 +59,13 @@ Show that you can quickly:
 
 This project initially failed to install and run due to multiple dependency and configuration issues. The following fixes were applied:
 
-- Fixed React runtime mismatch: the project uses React 17, so `react-dom/client` (React 18 API) was removed and the entrypoint was reverted to `ReactDOM.render`.
-- Standardized UI dependencies on **MUI v5**, restoring stable compatibility with React 17.
-- Resolved incompatible testing dependencies by aligning testing libraries with React 17.
-- Added required Node.js polyfills for browser-based Web3 libraries using Vite configuration (Node globals and module polyfills plus Rollup node polyfills).
-- Introduced Offline Safe Mode as the default execution path, allowing the application to run without external network dependencies.
-- Implemented a deterministic proof script to verify local execution after dependency repair.
+* Fixed React runtime mismatch: the project uses React 17, so `react-dom/client` (React 18 API) was removed and the entrypoint was reverted to `ReactDOM.render`.
+* Standardized UI dependencies on **MUI v5**, restoring stable compatibility with React 17.
+* Resolved incompatible testing dependencies by aligning testing libraries with React 17.
+* Added required Node.js polyfills for browser-based Web3 libraries using Vite configuration (Node globals and module polyfills plus Rollup node polyfills).
+* Fixed a React Router + MUI v5 interop issue where a function-valued `className` was passed to MUI `Button`, causing runtime warnings; updated Navbar usage to align with MUI v5 prop expectations.
+* Introduced Offline Safe Mode as the default execution path, allowing the application to run without external network dependencies.
+* Implemented a deterministic proof script to verify local execution after dependency repair.
 
 The project now installs, runs locally, and exposes a reproducible proof of correct execution.
 
@@ -104,11 +105,10 @@ PROOF: PASS ✅
 ```
 
 ### What the Proof Script Verifies
-
-- Node.js execution
-- Local probe server startup
-- Vite dev server reachability (HTTP 200 response)
-- Deterministic confirmation that the repaired project runs correctly
+* Node.js execution
+* Local probe server startup
+* Vite dev server reachability (HTTP 200 response)
+* Deterministic confirmation that the repaired project runs correctly
 
 Optional override:
 
@@ -128,9 +128,9 @@ Offline Safe Mode is enabled by default and prevents external network calls duri
 
 ### **Implementation Notes**
 
-- Moralis-dependent logic was isolated into dedicated components (e.g. `Networks.moralis.jsx`)
-- Hooks such as `useMoralis` and `useChain` are only executed when Moralis is enabled
-- This avoids invalid hook execution and eliminates runtime crashes when Moralis is disabled
+* Moralis-dependent logic was isolated into dedicated components (e.g. `Networks.moralis.jsx`)
+* Hooks such as `useMoralis` and `useChain` are only executed when Moralis is enabled
+* This avoids invalid hook execution and eliminates runtime crashes when Moralis is disabled
 
 To explicitly enable Moralis and external services:
 
@@ -150,35 +150,30 @@ VITE_MORALIS_APP_ID=
 VITE_MORALIS_SERVER_URL=
 ```
 
-- `.env.example` serves as a template for optional Moralis configuration.
-- `.env.local` may be created locally but is **ignored by git**.
-- No environment variables are required for a clean local startup.
+* `.env.example` serves as a template for optional Moralis configuration.
+* `.env.local` may be created locally but is **ignored by git**.
+* No environment variables are required for a clean local startup.
 
 ---
 
-## Files Included for Review
-
-- `package.json`
-- `package-lock.json`
-- `vite.config.js`
-- `src/index.jsx`
-- `src/components/Chains/Networks.jsx`
-- `src/components/Chains/Networks.moralis.jsx`
-- `scripts/prove.mjs`
-- `README.md`
+## **Files Included for Review**
+* `package.json`
+* `package-lock.json`
+* `vite.config.js`
+* `src/index.jsx`
+* `src/components/Chains/Networks.jsx`
+* `src/components/Chains/Networks.moralis.jsx`
+* `scripts/prove.mjs`
+* `README.md`
 
 ---
 
-## Notes
-
+## **Notes**
 * Console messages such as `Content Script Bridge...` may appear due to browser extensions and are **not related to the application**.
 * The application includes embedded third party content such as YouTube which may load after the initial render.
 * This behavior does not affect dependency correctness or application startup and is intentionally excluded from the proof script.
 
 ---
 
-## Result
-
+## **Result**
 The broken Node.js project was successfully repaired. It installs cleanly, runs locally without errors, and includes a deterministic proof script demonstrating correct execution.
-
-
